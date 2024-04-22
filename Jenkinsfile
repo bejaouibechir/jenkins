@@ -1,31 +1,16 @@
-pipeline {
-    agent any
-    
-    stages {
-        stage('Clone Repository') {
-            steps {
-                echo 'Start clonning'
-                git branch: 'main', url: 'https://github.com/bejaouibechir/jenkins.git'
-                echo 'End clonning'
-            }
-        }
-        stage('Build') {
-            steps {
-                echo 'Start building'
-                dir('src') {
-                    sh 'javac Main.java'
-                }
-                echo 'End building'
-            }
-        }
-        stage('Run') {
-            steps {
-                echo 'Start runing'
-                dir('src') {
-                    sh 'java Main'
-                }
-                echo 'End running'
-            }
+node{
+    def app
+    stage ('Clone'){
+        git branch: 'main', url: 'https://github.com/bejaouibechir/jenkins.git'
+    }
+    stage('Build image'){
+        app = docker.build('beajouibechir/nginx')
+    }
+    stage('Run image'){
+        docker.image('beajouibechir/nginx').withRun('-p 8081:80') {
+            c -> 
+            sh 'docker ps'
+            sh 'curl localhost:8081'
         }
     }
 }
