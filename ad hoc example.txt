@@ -1,0 +1,4 @@
+#specifying the hosts file
+ansible -i hosts -m ping 
+#specifying the group
+ansible clients -m ping
