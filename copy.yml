@@ -1,8 +1,0 @@
-#copier un fichier
-- name: Copy files
-  hosts: all
-  tasks:
-    - name: Copy script.py
-      copy:
-        src: test.txt
-        dest: /home/jenkins/test.txt
